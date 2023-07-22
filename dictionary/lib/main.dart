@@ -28,6 +28,7 @@ class _AppState extends State<App> {
 
     return MaterialApp(
       title: 'Dictionary',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,

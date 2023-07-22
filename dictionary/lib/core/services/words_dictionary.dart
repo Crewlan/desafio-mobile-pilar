@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 
-class WorldsDictionary {
+class WordsDictionary {
   int jsonLenght = 0;
   List<String> wordsList = [];
 
   Future loadJson() async {
-    final String response = await rootBundle.loadString('assets/json/worlds_dictionary.json');
+    final String response = await rootBundle.loadString('assets/json/words_dictionary.json');
 
     if (response.isNotEmpty) {
       final bruteData = jsonDecode(response);

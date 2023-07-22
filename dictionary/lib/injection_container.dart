@@ -1,10 +1,12 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
 import 'core/api/api_interceptor.dart';
 import 'core/api/url_creator.dart';
 import 'core/device/network_info.dart';
+import 'core/utils/toggle_config.dart';
 import 'features/words/data/datasources/words_local_datasource.dart';
 import 'features/words/data/repositories/words_repository.dart';
 import 'features/words/domain/repositories/i_words_repository.dart';
@@ -20,6 +22,13 @@ Future<void> init() async {
   sl.registerLazySingleton<IHttpClient>(() => HttpClient());
   sl.registerLazySingleton<IUrlCreator>(() => UrlCreator());
   sl.registerLazySingleton<INetworkInfo>(() => NetworkInfo(sl()));
+
+  final remoteConfig = FirebaseRemoteConfig.instance;
+  final defaults = <String, dynamic>{};
+  await remoteConfig.setDefaults(defaults);
+  await remoteConfig.fetch();
+  await remoteConfig.activate();
+  sl.registerLazySingleton<IToggleConfig>(() => ToggleConfig(remoteConfig));
 
   //! Feature
   //* Worlds

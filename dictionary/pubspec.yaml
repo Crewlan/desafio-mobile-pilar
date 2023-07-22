@@ -26,6 +26,8 @@ dependencies:
   dartz: ^0.10.1
   material_design_icons_flutter: ^6.0.7096
   floor: ^1.3.0
+  firebase_remote_config: ^4.2.1
+  firebase_core: ^2.1.0
 
 dev_dependencies:
   flutter_test:

@@ -1,12 +1,12 @@
 import '../../../../core/errors/exceptions.dart';
-import '../../../../core/services/worlds_dictionary.dart';
+import '../../../../core/services/words_dictionary.dart';
 
-abstract class IHomeLocalDatasource {
+abstract class IWordsLocalDatasource {
   Future<List<String>> getWorldsList();
 }
 
-class HomeLocalDatasource extends IHomeLocalDatasource {
-  final WorldsDictionary worldsDictionary = WorldsDictionary();
+class WordsLocalDatasource extends IWordsLocalDatasource {
+  final WordsDictionary worldsDictionary = WordsDictionary();
 
   @override
   Future<List<String>> getWorldsList() async {

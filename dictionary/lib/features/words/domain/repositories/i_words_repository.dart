@@ -2,6 +2,6 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failures.dart';
 
-abstract class IHomeRepository {
+abstract class IWordsRepository {
   Future<Either<Failure, List<String>>> getWorldsList();
 }

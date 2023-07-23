@@ -7,7 +7,11 @@ class AppStrings {
   static const delete = 'Deleted';
   static const failureNotFound = 'Word not found';
   static const atention = 'Atention';
-  static const tryAgain = 'Try again';
+  static const tryAgain = 'Exit';
   static const meaning = 'Meanings';
   static const errorMeaning = 'Not found meaning';
+  static const previous = 'Previous';
+  static const next = 'Next';
+  static const playAudio = 'Play Audio';
+  static const sorryAudio = "Sorry, I don't have a word to read";
 }

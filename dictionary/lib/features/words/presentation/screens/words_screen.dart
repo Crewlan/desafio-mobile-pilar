@@ -1,3 +1,4 @@
+import 'package:dictionary/features/words/presentation/screens/word_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -82,7 +83,12 @@ class _WordsScreenState extends State<WordsScreen> {
                 var worldItem = state.worldList?[position];
                 return WorldsCard(
                   worldText: worldItem,
-                  onTap: () => Navigator.of(context).pushNamed(Routes.word, arguments: worldItem),
+                  onTap: () => Navigator.of(context).pushNamed(Routes.word,
+                      arguments: WordDetailsScreenParams(
+                        word: worldItem,
+                        position: position,
+                        wordList: state.worldList,
+                      )),
                 );
               },
             ),

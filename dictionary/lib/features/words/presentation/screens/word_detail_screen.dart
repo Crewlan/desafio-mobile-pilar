@@ -1,41 +1,50 @@
-import 'package:dictionary/core/widgets/styled_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../../core/extensions/ui_helper_extension.dart';
+import '../../../../core/routes/routes.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../../../../core/widgets/styled_button.dart';
 import '../../../../core/widgets/styled_error_widget.dart';
-import '../../../../injection_container.dart';
 import '../word_bloc/word_bloc.dart';
 import '../word_bloc/word_state.dart';
 
 class WordDetailsScreenParams {
   final String? word;
   final List<String>? wordList;
+  final int? position;
 
-  WordDetailsScreenParams(this.word, this.wordList);
+  WordDetailsScreenParams({this.word, this.wordList, this.position});
 }
 
 class WordDetailScreen extends StatefulWidget {
   static WordDetailScreen withArgs(WordDetailsScreenParams args) => WordDetailScreen(
         word: args.word,
         wordList: args.wordList,
+        position: args.position,
       );
 
   final String? word;
   final List<String>? wordList;
+  final int? position;
 
-  const WordDetailScreen({super.key, this.word, this.wordList});
+  const WordDetailScreen({super.key, this.word, this.wordList, this.position});
 
   @override
   State<WordDetailScreen> createState() => _WordDetailScreenState();
 }
 
 class _WordDetailScreenState extends State<WordDetailScreen> {
-  final _wordBloc = sl<WordBloc>();
+  FlutterTts ftts = FlutterTts();
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +64,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
               case WordStatus.error:
                 return StyledErrorWidget(
                   msgError: state.msg,
-                  onRetry: () => _wordBloc.add(GetWordResponseEvent(word: widget.word)),
+                  onRetry: () => Navigator.of(context).pop(),
                 );
               case WordStatus.loading:
                 return const Center(
@@ -99,6 +108,23 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
               ),
             ),
             const SizedBox(height: 20),
+            Row(
+              children: [
+                Text(
+                  AppStrings.playAudio,
+                  style: GoogleFonts.inter(),
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    await ftts.setLanguage("en-US");
+                    await ftts.setSpeechRate(0.2);
+                    await ftts.speak(widget.word ?? AppStrings.sorryAudio);
+                  },
+                  child: const Icon(MdiIcons.play),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
             Text(
               AppStrings.meaning,
               style: GoogleFonts.inter(
@@ -137,22 +163,42 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    height: 60,
-                    width: 100,
-                    child: StyledButton(
-                      text: 'back',
-                      action: () {},
-                    ),
-                  ),
-                  SizedBox(
-                    height: 60,
-                    width: 100,
-                    child: StyledButton(
-                      text: 'next',
-                      action: () {},
-                    ),
-                  )
+                  widget.wordList?.first == widget.word
+                      ? const SizedBox.shrink()
+                      : SizedBox(
+                          height: 60,
+                          width: 100,
+                          child: StyledButton(
+                            text: AppStrings.previous,
+                            action: () {
+                              var prevWord = widget.wordList?[widget.position! - 1];
+                              Navigator.of(context).pushReplacementNamed(Routes.word,
+                                  arguments: WordDetailsScreenParams(
+                                    word: prevWord,
+                                    position: widget.position! - 1,
+                                    wordList: widget.wordList,
+                                  ));
+                            },
+                          ),
+                        ),
+                  widget.wordList?.last == widget.word
+                      ? const SizedBox.shrink()
+                      : SizedBox(
+                          height: 60,
+                          width: 100,
+                          child: StyledButton(
+                            text: AppStrings.next,
+                            action: () {
+                              var nextWord = widget.wordList?[widget.position! + 1];
+                              Navigator.of(context).pushReplacementNamed(Routes.word,
+                                  arguments: WordDetailsScreenParams(
+                                    word: nextWord,
+                                    position: widget.position! + 1,
+                                    wordList: widget.wordList,
+                                  ));
+                            },
+                          ),
+                        )
                 ],
               ),
             ),

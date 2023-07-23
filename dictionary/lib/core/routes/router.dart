@@ -21,14 +21,13 @@ class AppRouter {
           ),
         );
       case Routes.word:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: wordBloc..add(GetWordResponseEvent(word: settings.arguments as String)),
-            child: WordDetailScreen(
-              word: settings.arguments as String,
-            ),
-          ),
-        );
+        return MaterialPageRoute(builder: (_) {
+          var args = settings.arguments as WordDetailsScreenParams;
+          return BlocProvider.value(
+            value: wordBloc..add(GetWordResponseEvent(word: args.word)),
+            child: WordDetailScreen.withArgs(args),
+          );
+        });
       default:
         return MaterialPageRoute(
           settings: const RouteSettings(name: 'error_default'),

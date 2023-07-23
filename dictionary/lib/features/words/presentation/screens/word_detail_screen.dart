@@ -43,8 +43,17 @@ class WordDetailScreen extends StatefulWidget {
 
 class _WordDetailScreenState extends State<WordDetailScreen> {
   FlutterTts ftts = FlutterTts();
-  bool favorite = false;
+  late bool favorite;
   final _favoritesBloc = sl<FavoritesBloc>();
+
+  @override
+  void initState() {
+    favorite = _favoritesBloc.state.favoritesList
+            ?.firstWhere((element) => element.word == widget.word, orElse: () => const Favorites())
+            .favorited ??
+        false;
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -57,7 +66,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
       child: Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
+            onTap: () => Navigator.of(context).pushReplacementNamed(Routes.home, arguments: 0),
             child: const Icon(MdiIcons.close),
           ),
         ),

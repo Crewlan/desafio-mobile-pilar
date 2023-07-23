@@ -59,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     padding: const EdgeInsets.only(top: 6),
                     labelColor: AppColors.blueDarkest,
                     indicatorColor: AppColors.blueDarkest,
+                    overlayColor: MaterialStateProperty.all(Colors.transparent),
                     onTap: (position) {
                       position == 1 ? _historyBloc.add(GetHistoryEvent()) : null;
                       position == 2 ? _favoritesBloc.add(GetFavoritesEvent()) : null;

@@ -9,6 +9,6 @@ class GetWordsList {
   GetWordsList(this.repository);
 
   Future<Either<Failure, List<String>>> call() async {
-    return await repository.getWorldsList();
+    return await repository.getWordsList();
   }
 }

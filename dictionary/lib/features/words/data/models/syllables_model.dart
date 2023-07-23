@@ -18,10 +18,10 @@ class SyllablesModel extends Equatable {
     };
   }
 
-  factory SyllablesModel.fromJson(Map<String, dynamic> map) {
+  factory SyllablesModel.fromJson(Map<String, dynamic> json) {
     return SyllablesModel(
-      count: map['count'],
-      list: List<String>.from(map['list']),
+      count: json['count'] ?? 0,
+      list: json['list'] != null ? (json['list'] as List).map((e) => e.toString()).toList() : null,
     );
   }
 

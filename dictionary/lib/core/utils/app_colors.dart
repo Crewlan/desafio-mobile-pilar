@@ -19,6 +19,7 @@ class AppColors {
   static const redLightest = Color(0xFFFF7E7E);
   static const errorVerify = Color(0xFFFF0505);
   static const successVerify = Color(0xFF00FF47);
+  static const purpleLightest = Color(0xFFD5CAED);
 
   //! BoxShadows
   static const boxShadowColor1 = Color(0xFF494B5B);

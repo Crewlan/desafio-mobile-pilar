@@ -33,14 +33,14 @@ class ResultsModel extends Equatable {
     };
   }
 
-  factory ResultsModel.fromMap(Map<String, dynamic> json) => ResultsModel(
+  factory ResultsModel.fromJson(Map<String, dynamic> json) => ResultsModel(
         definition: json['definition'],
         partOfSpeech: json['partOfSpeech'],
-        synonyms: List<String>.from(json['synonyms']),
-        typeOf: List<String>.from(json['typeOf']),
-        hasTypes: List<String>.from(json['hasTypes']),
-        derivation: List<String>.from(json['derivation']),
-        examples: List<String>.from(json['examples']),
+        synonyms: json['synonyms'] != null ? (json['synonyms'] as List).map((e) => e.toString()).toList() : null,
+        typeOf: json['typeOf'] != null ? (json['typeOf'] as List).map((e) => e.toString()).toList() : null,
+        hasTypes: json['hasTypes'] != null ? (json['hasTypes'] as List).map((e) => e.toString()).toList() : null,
+        derivation: json['derivation'] != null ? (json['derivation'] as List).map((e) => e.toString()).toList() : null,
+        examples: json['examples'] != null ? (json['examples'] as List).map((e) => e.toString()).toList() : null,
       );
 
   factory ResultsModel.fromEntity(Results? entity) => ResultsModel(

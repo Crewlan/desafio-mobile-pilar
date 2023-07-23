@@ -3,14 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/extensions/ui_helper_extension.dart';
+import '../../../../core/routes/routes.dart';
 import '../../../../core/services/words_dictionary.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/styled_error_widget.dart';
 import '../../../../injection_container.dart';
-import '../bloc/worlds_bloc.dart';
-import '../bloc/worlds_state.dart';
 import '../widgets/worlds_card.dart';
+import '../words_list_bloc/words_bloc.dart';
+import '../words_list_bloc/words_state.dart';
 
 class WordsScreen extends StatefulWidget {
   const WordsScreen({super.key});
@@ -22,11 +23,6 @@ class WordsScreen extends StatefulWidget {
 class _WordsScreenState extends State<WordsScreen> {
   WordsDictionary worldsDictionary = WordsDictionary();
   final _worldsBloc = sl<WordsBloc>();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +82,7 @@ class _WordsScreenState extends State<WordsScreen> {
                 var worldItem = state.worldList?[position];
                 return WorldsCard(
                   worldText: worldItem,
+                  onTap: () => Navigator.of(context).pushNamed(Routes.word, arguments: worldItem),
                 );
               },
             ),

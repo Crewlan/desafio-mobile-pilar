@@ -1,3 +1,4 @@
+import 'package:dictionary/core/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -26,7 +27,7 @@ class StyledErrorWidget extends StatelessWidget {
         children: [
           const SizedBox(height: 16),
           Text(
-            titleError ?? 'Atenção',
+            titleError ?? AppStrings.atention,
             style: const TextStyle(fontFamily: 'Montserrat', fontSize: 16),
             textAlign: TextAlign.center,
           ),
@@ -46,7 +47,7 @@ class StyledErrorWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      msgButtonRetry ?? 'Tentar novamente',
+                      msgButtonRetry ?? AppStrings.tryAgain,
                       style: const TextStyle(fontFamily: 'Montserrat', decoration: TextDecoration.underline),
                     ),
                     const SizedBox(width: 8),

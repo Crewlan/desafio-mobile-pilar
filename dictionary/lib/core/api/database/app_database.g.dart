@@ -65,13 +65,15 @@ class _$AppDatabase extends AppDatabase {
 
   HistoryDao? _historyDaoInstance;
 
+  FavoritesDao? _favoritesDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
     Callback? callback,
   ]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
-      version: 1,
+      version: 3,
       onConfigure: (database) async {
         await database.execute('PRAGMA foreign_keys = ON');
         await callback?.onConfigure?.call(database);
@@ -90,6 +92,8 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `ResponseWord` (`word` TEXT, `results` TEXT, `syllables` TEXT, `pronunciation` TEXT, `frequency` REAL, PRIMARY KEY (`word`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `History` (`word` TEXT, PRIMARY KEY (`word`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `Favorites` (`word` TEXT, `favorited` INTEGER, `response` TEXT, PRIMARY KEY (`word`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -105,6 +109,11 @@ class _$AppDatabase extends AppDatabase {
   @override
   HistoryDao get historyDao {
     return _historyDaoInstance ??= _$HistoryDao(database, changeListener);
+  }
+
+  @override
+  FavoritesDao get favoritesDao {
+    return _favoritesDaoInstance ??= _$FavoritesDao(database, changeListener);
   }
 }
 
@@ -197,6 +206,59 @@ class _$HistoryDao extends HistoryDao {
   Future<void> insertHistory(List<HistoryModel> word) async {
     await _historyModelInsertionAdapter.insertList(
         word, OnConflictStrategy.replace);
+  }
+}
+
+class _$FavoritesDao extends FavoritesDao {
+  _$FavoritesDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _favoritesModelInsertionAdapter = InsertionAdapter(
+            database,
+            'Favorites',
+            (FavoritesModel item) => <String, Object?>{
+                  'word': item.word,
+                  'favorited':
+                      item.favorited == null ? null : (item.favorited! ? 1 : 0),
+                  'response': _responseWordConverter.encode(item.response)
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<FavoritesModel> _favoritesModelInsertionAdapter;
+
+  @override
+  Future<List<FavoritesModel>?> getFavorites() async {
+    return _queryAdapter.queryList('SELECT * FROM Favorites',
+        mapper: (Map<String, Object?> row) => FavoritesModel(
+            word: row['word'] as String?,
+            favorited: row['favorited'] == null
+                ? null
+                : (row['favorited'] as int) != 0,
+            response:
+                _responseWordConverter.decode(row['response'] as String)));
+  }
+
+  @override
+  Future<void> deleteFavorites(String word) async {
+    await _queryAdapter.queryNoReturn('DELETE FROM Favorites WHERE word = ?1',
+        arguments: [word]);
+  }
+
+  @override
+  Future<void> deleteAllFavorites() async {
+    await _queryAdapter.queryNoReturn('DELETE FROM Favorites');
+  }
+
+  @override
+  Future<void> insertFavorites(List<FavoritesModel> favoritesList) async {
+    await _favoritesModelInsertionAdapter.insertList(
+        favoritesList, OnConflictStrategy.replace);
   }
 }
 

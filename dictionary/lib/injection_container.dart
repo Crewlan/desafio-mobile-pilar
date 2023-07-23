@@ -1,4 +1,12 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dictionary/features/favorites/data/datasources/local/favorites_local_datasource.dart';
+import 'package:dictionary/features/favorites/data/repositories/favorites_repository.dart';
+import 'package:dictionary/features/favorites/domain/repositories/i_favorites_repository.dart';
+import 'package:dictionary/features/favorites/domain/usecases/delete_all_favorites.dart';
+import 'package:dictionary/features/favorites/domain/usecases/delete_favorites.dart';
+import 'package:dictionary/features/favorites/domain/usecases/get_favorites.dart';
+import 'package:dictionary/features/favorites/domain/usecases/save_favorites.dart';
+import 'package:dictionary/features/favorites/presentation/bloc/favorite_bloc.dart';
 import 'package:dictionary/features/history/data/datasources/history_local_datasource.dart';
 import 'package:dictionary/features/history/data/repositories/history_repository.dart';
 import 'package:dictionary/features/history/domain/usecases/delete_all_history.dart';
@@ -44,7 +52,6 @@ Future<void> init() async {
 
   //! Feature
   //* Worlds and Word
-
   //* Datasource
   sl.registerLazySingleton<IWordsLocalDatasource>(() => WordsLocalDatasource(sl<AppDatabase>().wordsDao));
   sl.registerLazySingleton<IWordsRemoteDatasource>(() => WordsRemoteDatasource(sl(), sl(), sl()));
@@ -62,7 +69,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => WordBloc(sl(), sl())); //To Get info about word consulting the api
 
   //* History
-
   //* Datasource
   sl.registerLazySingleton<IHistoryLocalDatasource>(() => HistoryLocalDatasource(sl<AppDatabase>().historyDao));
 
@@ -77,8 +83,30 @@ Future<void> init() async {
   //* Bloc
   sl.registerLazySingleton(() => HistoryBloc(sl(), sl(), sl()));
 
+  //* Favorites
+  //* Datasource
+  sl.registerLazySingleton<IFavoritesLocalDatasource>(() => FavoritesLocalDatasource(sl<AppDatabase>().favoritesDao));
+
+  //* Repository
+  sl.registerLazySingleton<IFavoritesRepository>(() => FavoritesRepository(sl()));
+
+  //* Usecase
+  sl.registerLazySingleton(() => SaveFavorites(sl()));
+  sl.registerLazySingleton(() => GetFavorites(sl()));
+  sl.registerLazySingleton(() => DeleteFavorites(sl()));
+  sl.registerLazySingleton(() => DeleteAllFavorites(sl()));
+
+  //* Bloc
+  sl.registerLazySingleton(() => FavoritesBloc(
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+      ));
+
   final database = await $FloorAppDatabase.databaseBuilder('dictionary.db').addMigrations([
     AppDatabase.migration1to2,
+    AppDatabase.migration2to3,
   ]).build();
 
   sl.registerLazySingleton<AppDatabase>(() => database);

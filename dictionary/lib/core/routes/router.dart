@@ -1,3 +1,6 @@
+import 'package:dictionary/features/favorites/domain/entities/favorites.dart';
+import 'package:dictionary/features/favorites/presentation/bloc/favorite_bloc.dart';
+import 'package:dictionary/features/favorites/presentation/widgets/favorite_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,20 +17,20 @@ class AppRouter {
     final wordsBloc = sl<WordsBloc>();
     final wordBloc = sl<WordBloc>();
     final historyBloc = sl<HistoryBloc>();
+    final favoritesBloc = sl<FavoritesBloc>();
 
     switch (settings.name) {
       case Routes.home:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
-              BlocProvider.value(
-                value: wordsBloc..add(GetWordsEvent()),
-              ),
-              BlocProvider.value(
-                value: historyBloc..add(GetHistoryEvent()),
-              ),
+              BlocProvider.value(value: wordsBloc..add(GetWordsEvent())),
+              BlocProvider.value(value: historyBloc..add(GetHistoryEvent())),
+              BlocProvider.value(value: favoritesBloc..add(GetFavoritesEvent())),
             ],
-            child: const HomeScreen(),
+            child: HomeScreen(
+              index: settings.arguments as int,
+            ),
           ),
         );
       case Routes.word:
@@ -38,6 +41,11 @@ class AppRouter {
             child: WordDetailScreen.withArgs(args),
           );
         });
+      case Routes.favoriteDetails:
+        return MaterialPageRoute(
+            builder: (_) => FavoriteDetailsScreen(
+                  favorites: settings.arguments as Favorites,
+                ));
       default:
         return MaterialPageRoute(
           settings: const RouteSettings(name: 'error_default'),

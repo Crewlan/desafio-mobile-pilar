@@ -1,3 +1,4 @@
+import 'package:dictionary/features/favorites/domain/entities/favorites.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -10,6 +11,8 @@ import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/styled_button.dart';
 import '../../../../core/widgets/styled_error_widget.dart';
+import '../../../../injection_container.dart';
+import '../../../favorites/presentation/bloc/favorite_bloc.dart';
 import '../word_bloc/word_bloc.dart';
 import '../word_bloc/word_state.dart';
 
@@ -40,6 +43,17 @@ class WordDetailScreen extends StatefulWidget {
 
 class _WordDetailScreenState extends State<WordDetailScreen> {
   FlutterTts ftts = FlutterTts();
+  late bool favorite;
+  final _favoritesBloc = sl<FavoritesBloc>();
+
+  @override
+  void initState() {
+    favorite = _favoritesBloc.state.favoritesList
+            ?.firstWhere((element) => element.word == widget.word, orElse: () => const Favorites())
+            .favorited ??
+        false;
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -52,7 +66,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
       child: Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
+            onTap: () => Navigator.of(context).pushReplacementNamed(Routes.home, arguments: 0),
             child: const Icon(MdiIcons.close),
           ),
         ),
@@ -110,19 +124,44 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
             ),
             const SizedBox(height: 20),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  AppStrings.playAudio,
-                  style: GoogleFonts.inter(),
+                Row(
+                  children: [
+                    Text(
+                      AppStrings.playAudio,
+                      style: GoogleFonts.inter(),
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        await ftts.setLanguage("en-US");
+                        await ftts.setSpeechRate(0.2);
+                        await ftts.speak(widget.word ?? AppStrings.sorryAudio);
+                      },
+                      child: const Icon(MdiIcons.play),
+                    ),
+                  ],
                 ),
                 GestureDetector(
-                  onTap: () async {
-                    await ftts.setLanguage("en-US");
-                    await ftts.setSpeechRate(0.2);
-                    await ftts.speak(widget.word ?? AppStrings.sorryAudio);
+                  onTap: () {
+                    setState(() {
+                      favorite = !favorite;
+                    });
+                    favorite == true
+                        ? _favoritesBloc.add(SaveFavoritesEvent(favoritesList: [
+                            Favorites(
+                              word: widget.word,
+                              responseWord: state.responseWord,
+                              favorited: favorite,
+                            )
+                          ]))
+                        : _favoritesBloc.add(DeleteFavoritesEvent(word: widget.word));
                   },
-                  child: const Icon(MdiIcons.play),
-                ),
+                  child: Icon(
+                    favorite == true ? MdiIcons.heart : MdiIcons.heartOutline,
+                    color: AppColors.redLightest,
+                  ),
+                )
               ],
             ),
             const SizedBox(height: 20),

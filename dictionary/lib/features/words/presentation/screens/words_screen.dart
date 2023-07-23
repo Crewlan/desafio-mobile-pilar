@@ -12,7 +12,7 @@ import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/styled_error_widget.dart';
 import '../../../../injection_container.dart';
 import '../../../history/domain/entities/history.dart';
-import '../widgets/worlds_card.dart';
+import '../widgets/words_card.dart';
 import '../words_list_bloc/words_bloc.dart';
 import '../words_list_bloc/words_state.dart';
 
@@ -85,7 +85,7 @@ class _WordsScreenState extends State<WordsScreen> {
               itemCount: state.worldList?.length,
               itemBuilder: (context, position) {
                 var wordItem = state.worldList?[position];
-                return WorldsCard(
+                return WordsCard(
                     worldText: wordItem,
                     onTap: () {
                       Navigator.of(context).pushNamed(Routes.word,

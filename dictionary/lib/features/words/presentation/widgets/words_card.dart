@@ -3,11 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/utils/app_colors.dart';
 
-class WorldsCard extends StatelessWidget {
+class WordsCard extends StatelessWidget {
   final String? worldText;
   final VoidCallback? onTap;
 
-  const WorldsCard({
+  const WordsCard({
     Key? key,
     this.worldText,
     this.onTap,

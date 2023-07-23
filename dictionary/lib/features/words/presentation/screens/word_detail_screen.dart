@@ -60,6 +60,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
           builder: (context, state) {
             switch (state.status) {
               case WordStatus.ready:
+              case WordStatus.message:
                 return _ready(context, state);
               case WordStatus.error:
                 return StyledErrorWidget(

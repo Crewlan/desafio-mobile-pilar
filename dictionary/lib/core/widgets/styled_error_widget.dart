@@ -50,11 +50,11 @@ class StyledErrorWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        msgButtonRetry ?? AppStrings.tryAgain,
+                        msgButtonRetry ?? AppStrings.exit,
                         style: GoogleFonts.montserrat(decoration: TextDecoration.underline),
                       ),
                       const SizedBox(width: 8),
-                      const Icon(MdiIcons.close)
+                      Icon(msgButtonRetry?.isNotEmpty == true ? MdiIcons.reload : MdiIcons.close)
                     ],
                   ),
                 ),

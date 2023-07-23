@@ -1,3 +1,4 @@
+import 'package:dictionary/features/history/presentation/bloc/history_bloc.dart';
 import 'package:dictionary/features/words/presentation/screens/word_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/styled_error_widget.dart';
 import '../../../../injection_container.dart';
+import '../../../history/domain/entities/history.dart';
 import '../widgets/worlds_card.dart';
 import '../words_list_bloc/words_bloc.dart';
 import '../words_list_bloc/words_state.dart';
@@ -24,6 +26,7 @@ class WordsScreen extends StatefulWidget {
 class _WordsScreenState extends State<WordsScreen> {
   WordsDictionary worldsDictionary = WordsDictionary();
   final _worldsBloc = sl<WordsBloc>();
+  final _historyBloc = sl<HistoryBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +54,7 @@ class _WordsScreenState extends State<WordsScreen> {
   }
 
   Widget _ready(BuildContext context, WordsState state) {
+    var historyList = _historyBloc.state.words;
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Column(
@@ -80,16 +84,20 @@ class _WordsScreenState extends State<WordsScreen> {
               ),
               itemCount: state.worldList?.length,
               itemBuilder: (context, position) {
-                var worldItem = state.worldList?[position];
+                var wordItem = state.worldList?[position];
                 return WorldsCard(
-                  worldText: worldItem,
-                  onTap: () => Navigator.of(context).pushNamed(Routes.word,
-                      arguments: WordDetailsScreenParams(
-                        word: worldItem,
-                        position: position,
-                        wordList: state.worldList,
-                      )),
-                );
+                    worldText: wordItem,
+                    onTap: () {
+                      Navigator.of(context).pushNamed(Routes.word,
+                          arguments: WordDetailsScreenParams(
+                            word: wordItem,
+                            position: position,
+                            wordList: state.worldList,
+                          ));
+                      historyList?.removeWhere((element) => element.word == wordItem);
+                      historyList?.add(History(word: wordItem));
+                      _historyBloc.add(SaveHistoryEvent(words: historyList));
+                    });
               },
             ),
           ),

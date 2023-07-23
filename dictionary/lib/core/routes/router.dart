@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../features/history/presentation/bloc/history_bloc.dart';
 import '../../features/home/presentation/screen/home_screen.dart';
 import '../../features/words/presentation/screens/word_detail_screen.dart';
 import '../../features/words/presentation/word_bloc/word_bloc.dart';
@@ -12,11 +13,20 @@ class AppRouter {
   Route generateRoutes(RouteSettings settings) {
     final wordsBloc = sl<WordsBloc>();
     final wordBloc = sl<WordBloc>();
+    final historyBloc = sl<HistoryBloc>();
+
     switch (settings.name) {
       case Routes.home:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: wordsBloc..add(GetWordsEvent()),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: wordsBloc..add(GetWordsEvent()),
+              ),
+              BlocProvider.value(
+                value: historyBloc..add(GetHistoryEvent()),
+              ),
+            ],
             child: const HomeScreen(),
           ),
         );

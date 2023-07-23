@@ -1,8 +1,15 @@
 part of 'history_bloc.dart';
 
-abstract class HistoryEvent extends Equatable {
-  const HistoryEvent();
+abstract class HistoryEvent {}
 
-  @override
-  List<Object> get props => [];
+class GetHistoryEvent extends HistoryEvent {}
+
+class SaveHistoryEvent extends HistoryEvent {
+  List<History>? words;
+
+  SaveHistoryEvent({
+    this.words,
+  });
 }
+
+class DeleteAllHistoryEvent extends HistoryEvent {}

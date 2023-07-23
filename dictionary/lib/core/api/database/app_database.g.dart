@@ -63,6 +63,8 @@ class _$AppDatabase extends AppDatabase {
 
   WordsDao? _wordsDaoInstance;
 
+  HistoryDao? _historyDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -86,6 +88,8 @@ class _$AppDatabase extends AppDatabase {
       onCreate: (database, version) async {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `ResponseWord` (`word` TEXT, `results` TEXT, `syllables` TEXT, `pronunciation` TEXT, `frequency` REAL, PRIMARY KEY (`word`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `History` (`word` TEXT, PRIMARY KEY (`word`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -96,6 +100,11 @@ class _$AppDatabase extends AppDatabase {
   @override
   WordsDao get wordsDao {
     return _wordsDaoInstance ??= _$WordsDao(database, changeListener);
+  }
+
+  @override
+  HistoryDao get historyDao {
+    return _historyDaoInstance ??= _$HistoryDao(database, changeListener);
   }
 }
 
@@ -156,8 +165,44 @@ class _$WordsDao extends WordsDao {
   }
 }
 
+class _$HistoryDao extends HistoryDao {
+  _$HistoryDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _historyModelInsertionAdapter = InsertionAdapter(database, 'History',
+            (HistoryModel item) => <String, Object?>{'word': item.word});
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<HistoryModel> _historyModelInsertionAdapter;
+
+  @override
+  Future<List<HistoryModel>?> getHistory() async {
+    return _queryAdapter.queryList('SELECT * FROM History',
+        mapper: (Map<String, Object?> row) =>
+            HistoryModel(word: row['word'] as String?));
+  }
+
+  @override
+  Future<void> deleteAllHistory() async {
+    await _queryAdapter.queryNoReturn('DELETE FROM History');
+  }
+
+  @override
+  Future<void> insertHistory(List<HistoryModel> word) async {
+    await _historyModelInsertionAdapter.insertList(
+        word, OnConflictStrategy.replace);
+  }
+}
+
 // ignore_for_file: unused_element
 final _responseWordConverter = ResponseWordConverter();
 final _resultsConverter = ResultsConverter();
 final _syllableConverter = SyllableConverter();
 final _pronunciationConverter = PronunciationConverter();
+final _listStringConverter = ListStringConverter();

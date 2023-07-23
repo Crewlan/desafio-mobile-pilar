@@ -1,4 +1,5 @@
 import 'package:dictionary/core/utils/app_strings.dart';
+import 'package:dictionary/features/history/presentation/screen/history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -73,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     controller: _tabController,
                     children: [
                       _buildPage(const WordsScreen()),
-                      _buildPage(const WordsScreen()),
+                      _buildPage(HistoryScreen()),
                       _buildPage(const WordsScreen()),
                     ],
                   ),

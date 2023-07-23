@@ -1,7 +1,8 @@
-import 'package:dictionary/features/words/domain/entities/response_word.dart';
 import 'package:equatable/equatable.dart';
 
-enum WordStatus { loading, ready, error }
+import '../../domain/entities/response_word.dart';
+
+enum WordStatus { loading, ready, error, message }
 
 class WordState extends Equatable {
   final WordStatus status;
@@ -21,5 +22,5 @@ class WordState extends Equatable {
 
   WordState error(String msgError) => WordState._(WordStatus.error, responseWord, msgError);
 
-  WordState message(String msg) => WordState._(WordStatus.error, responseWord, msg);
+  WordState message(String msg) => WordState._(WordStatus.message, responseWord, msg);
 }

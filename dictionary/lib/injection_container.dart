@@ -1,4 +1,10 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dictionary/features/history/data/datasources/history_local_datasource.dart';
+import 'package:dictionary/features/history/data/repositories/history_repository.dart';
+import 'package:dictionary/features/history/domain/usecases/delete_all_history.dart';
+import 'package:dictionary/features/history/domain/usecases/get_history.dart';
+import 'package:dictionary/features/history/domain/usecases/save_history.dart';
+import 'package:dictionary/features/history/presentation/bloc/history_bloc.dart';
 import 'package:dictionary/features/words/domain/usecases/delete_all_response_word.dart';
 import 'package:dictionary/features/words/domain/usecases/get_response_word.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -10,6 +16,7 @@ import 'core/api/database/app_database.dart';
 import 'core/api/url_creator.dart';
 import 'core/device/network_info.dart';
 import 'core/utils/toggle_config.dart';
+import 'features/history/domain/repositories/i_history_repository.dart';
 import 'features/words/data/datasources/local/words_local_datasource.dart';
 import 'features/words/data/datasources/remote/words_remote_datasource.dart';
 import 'features/words/data/repositories/words_repository.dart';
@@ -53,6 +60,22 @@ Future<void> init() async {
   //* Bloc
   sl.registerLazySingleton(() => WordsBloc(sl())); //To get offline list words
   sl.registerLazySingleton(() => WordBloc(sl(), sl())); //To Get info about word consulting the api
+
+  //* History
+
+  //* Datasource
+  sl.registerLazySingleton<IHistoryLocalDatasource>(() => HistoryLocalDatasource(sl<AppDatabase>().historyDao));
+
+  //* Repository
+  sl.registerLazySingleton<IHistoryRepository>(() => HistoryRepository(sl()));
+
+  //* Usecase
+  sl.registerLazySingleton(() => SaveHistory(sl()));
+  sl.registerLazySingleton(() => GetHistory(sl()));
+  sl.registerLazySingleton(() => DeleteAllHistory(sl()));
+
+  //* Bloc
+  sl.registerLazySingleton(() => HistoryBloc(sl(), sl(), sl()));
 
   final database = await $FloorAppDatabase.databaseBuilder('dictionary.db').addMigrations([
     AppDatabase.migration1to2,

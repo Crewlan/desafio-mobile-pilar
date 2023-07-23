@@ -1,14 +1,19 @@
 import 'package:dictionary/core/utils/app_strings.dart';
+import 'package:dictionary/features/favorites/presentation/screen/favorites_screen.dart';
+import 'package:dictionary/features/history/presentation/bloc/history_bloc.dart';
 import 'package:dictionary/features/history/presentation/screen/history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/extensions/ui_helper_extension.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../injection_container.dart';
+import '../../../favorites/presentation/bloc/favorite_bloc.dart';
 import '../../../words/presentation/screens/words_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final int? index;
+  const HomeScreen({super.key, this.index});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -16,10 +21,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late TabController _tabController;
+  final _favoritesBloc = sl<FavoritesBloc>();
+  final _historyBloc = sl<HistoryBloc>();
 
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: 3, vsync: this, initialIndex: widget.index ?? 0);
     super.initState();
   }
 
@@ -52,19 +59,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     padding: const EdgeInsets.only(top: 6),
                     labelColor: AppColors.blueDarkest,
                     indicatorColor: AppColors.blueDarkest,
+                    onTap: (position) {
+                      position == 1 ? _historyBloc.add(GetHistoryEvent()) : null;
+                      position == 2 ? _favoritesBloc.add(GetFavoritesEvent()) : null;
+                    },
                     tabs: [
-                      Text(
-                        AppStrings.worlds,
-                        style: GoogleFonts.inter(fontSize: 16),
-                      ),
-                      Text(
-                        AppStrings.history,
-                        style: GoogleFonts.inter(fontSize: 16),
-                      ),
-                      Text(
-                        AppStrings.favorites,
-                        style: GoogleFonts.inter(fontSize: 16),
-                      ),
+                      Text(AppStrings.worlds, style: GoogleFonts.inter(fontSize: 16)),
+                      Text(AppStrings.history, style: GoogleFonts.inter(fontSize: 16)),
+                      Text(AppStrings.favorites, style: GoogleFonts.inter(fontSize: 16)),
                     ],
                   ),
                 ),
@@ -75,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     children: [
                       _buildPage(const WordsScreen()),
                       _buildPage(HistoryScreen()),
-                      _buildPage(const WordsScreen()),
+                      _buildPage(const FavoritesScreen()),
                     ],
                   ),
                 )

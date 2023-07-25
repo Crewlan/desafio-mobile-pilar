@@ -39,7 +39,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
 
     on<SaveHistoryEvent>((event, emit) async {
       emit(state.loading());
-      var fold = await saveHistory(event.words);
+      var fold = await saveHistory(word: event.words);
       emit(
         fold.fold(
           (failure) => state.error(_mapHistoryFailureToString(failure)),

@@ -8,7 +8,7 @@ class DeleteFavorites {
 
   DeleteFavorites(this.repository);
 
-  Future<Either<Failure, String>> call(String? word) async {
-    return await repository.deleteFavorites(word);
+  Future<Either<Failure, String>> call({String? word}) async {
+    return await repository.deleteFavorites(word: word);
   }
 }

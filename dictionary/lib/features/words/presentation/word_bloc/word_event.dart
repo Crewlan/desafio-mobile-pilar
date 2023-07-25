@@ -9,5 +9,3 @@ class GetWordResponseEvent extends WordEvent {
     this.word,
   });
 }
-
-class DeleteAllWordResponseEvent extends WordEvent {}

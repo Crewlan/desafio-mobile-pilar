@@ -32,7 +32,7 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
 
     on<SaveFavoritesEvent>((event, emit) async {
       emit(state.loading());
-      var fold = await saveFavorites(event.favoritesList);
+      var fold = await saveFavorites(favoritesList: event.favoritesList);
       emit(
         fold.fold(
           (failure) => state.error(_mapFavoritesFailureToString(failure)),
@@ -43,7 +43,7 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
 
     on<DeleteFavoritesEvent>((event, emit) async {
       emit(state.loading());
-      var fold = await deleteFavorites(event.word);
+      var fold = await deleteFavorites(word: event.word);
       emit(
         fold.fold(
           (failure) => state.error(_mapFavoritesFailureToString(failure)),

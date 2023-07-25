@@ -7,11 +7,8 @@ import 'words_dao.dart';
 
 abstract class IWordsLocalDatasource {
   Future<List<String>> getWordsList();
-
   Future<ResponseWordModel?> getResponseWord(String? word);
   Future<void> cacheResponseWord(ResponseWordModel responseWordModel);
-  Future<void> deleteResponseWord(String? word);
-  Future<void> deleteAllResponseWord();
 }
 
 class WordsLocalDatasource extends IWordsLocalDatasource {
@@ -35,24 +32,6 @@ class WordsLocalDatasource extends IWordsLocalDatasource {
   Future<void> cacheResponseWord(ResponseWordModel responseWordModel) async {
     try {
       await wordsDao.insertResponseWord(responseWordModel);
-    } on DatabaseException {
-      throw CacheException();
-    }
-  }
-
-  @override
-  Future<void> deleteAllResponseWord() async {
-    try {
-      await wordsDao.deleteAllResponses();
-    } on DatabaseException {
-      throw CacheException();
-    }
-  }
-
-  @override
-  Future<void> deleteResponseWord(String? word) async {
-    try {
-      await wordsDao.deleteResponseWord(word ?? '');
     } on DatabaseException {
       throw CacheException();
     }

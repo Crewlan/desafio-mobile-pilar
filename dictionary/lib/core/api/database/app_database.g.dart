@@ -156,18 +156,6 @@ class _$WordsDao extends WordsDao {
   }
 
   @override
-  Future<void> deleteResponseWord(String word) async {
-    await _queryAdapter.queryNoReturn(
-        'DELETE FROM ResponseWord WHERE word = ?1',
-        arguments: [word]);
-  }
-
-  @override
-  Future<void> deleteAllResponses() async {
-    await _queryAdapter.queryNoReturn('DELETE FROM ResponseWord');
-  }
-
-  @override
   Future<void> insertResponseWord(ResponseWordModel responseWordModel) async {
     await _responseWordModelInsertionAdapter.insert(
         responseWordModel, OnConflictStrategy.replace);

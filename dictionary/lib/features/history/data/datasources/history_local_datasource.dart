@@ -6,7 +6,7 @@ import 'history_dao.dart';
 
 abstract class IHistoryLocalDatasource {
   Future<List<HistoryModel>?> getHistory();
-  Future<void> cacheHistory(List<HistoryModel>? word);
+  Future<void> cacheHistory({List<HistoryModel>? word});
   Future<void> deleteAllHistory();
 }
 
@@ -16,7 +16,7 @@ class HistoryLocalDatasource extends IHistoryLocalDatasource {
   HistoryLocalDatasource(this.historyDao);
 
   @override
-  Future<void> cacheHistory(List<HistoryModel>? word) async {
+  Future<void> cacheHistory({List<HistoryModel>? word}) async {
     try {
       await historyDao.insertHistory(word ?? []);
     } on DatabaseException {

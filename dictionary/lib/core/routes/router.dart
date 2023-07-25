@@ -39,8 +39,13 @@ class AppRouter {
       case Routes.word:
         return MaterialPageRoute(builder: (_) {
           var args = settings.arguments as WordDetailsScreenParams;
-          return BlocProvider.value(
-            value: wordBloc..add(GetWordResponseEvent(word: args.word)),
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: wordBloc..add(GetWordResponseEvent(word: args.word)),
+              ),
+              BlocProvider.value(value: favoritesBloc..add(GetFavoritesEvent())),
+            ],
             child: WordDetailScreen.withArgs(args),
           );
         });

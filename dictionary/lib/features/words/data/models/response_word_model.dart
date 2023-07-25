@@ -45,16 +45,16 @@ class ResponseWordModel extends Equatable {
 
   factory ResponseWordModel.fromEntity(ResponseWord? entity) => ResponseWordModel(
         word: entity?.word,
-        results: entity?.resultsModel?.map((e) => ResultsModel.fromEntity(e)).toList(),
-        syllables: SyllablesModel.fromEntity(entity?.syllablesModel),
+        results: entity?.results?.map((e) => ResultsModel.fromEntity(e)).toList(),
+        syllables: SyllablesModel.fromEntity(entity?.syllables),
         pronunciation: PronunciationModel.fromEntity(entity?.pronunciation),
         frequency: entity?.frequency,
       );
 
   ResponseWord toEntity() => ResponseWord(
         word: word,
-        resultsModel: results?.map((e) => e.toEntity()).toList(),
-        syllablesModel: syllables?.toEntity(),
+        results: results?.map((e) => e.toEntity()).toList(),
+        syllables: syllables?.toEntity(),
         pronunciation: pronunciation?.toEntity(),
         frequency: frequency,
       );

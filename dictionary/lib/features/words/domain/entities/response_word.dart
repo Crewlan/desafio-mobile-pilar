@@ -6,15 +6,15 @@ import 'syllables.dart';
 
 class ResponseWord extends Equatable {
   final String? word;
-  final List<Results>? resultsModel;
-  final Syllables? syllablesModel;
+  final List<Results>? results;
+  final Syllables? syllables;
   final Pronunciation? pronunciation;
   final double? frequency;
 
   const ResponseWord({
     this.word,
-    this.resultsModel,
-    this.syllablesModel,
+    this.results,
+    this.syllables,
     this.pronunciation,
     this.frequency,
   });
@@ -23,8 +23,8 @@ class ResponseWord extends Equatable {
   List<Object?> get props {
     return [
       word,
-      resultsModel,
-      syllablesModel,
+      results,
+      syllables,
       pronunciation,
       frequency,
     ];

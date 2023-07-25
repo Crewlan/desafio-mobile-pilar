@@ -132,13 +132,13 @@ class _FavoriteDetailScreenState extends State<FavoriteDetailsScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            widget.favorites?.responseWord?.resultsModel != null
+            widget.favorites?.responseWord?.results != null
                 ? SizedBox(
                     height: 350,
                     child: ListView.builder(
-                      itemCount: widget.favorites?.responseWord?.resultsModel?.length,
+                      itemCount: widget.favorites?.responseWord?.results?.length,
                       itemBuilder: (context, position) {
-                        var itemResult = widget.favorites?.responseWord?.resultsModel?[position];
+                        var itemResult = widget.favorites?.responseWord?.results?[position];
                         return Text(
                           '${itemResult?.partOfSpeech ?? ''} - ${itemResult?.definition ?? ''}',
                           style: GoogleFonts.inter(fontSize: 14, color: AppColors.darkest),

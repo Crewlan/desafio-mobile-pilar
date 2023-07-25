@@ -17,5 +17,6 @@ class AppStrings {
   static const playAudio = 'Play Audio';
   static const sorryAudio = "Sorry, I don't have a word to read";
   static const failureLoadWorldsHistory = 'Error loading words history';
+  static const failureLoadWorldsFavorites = 'Error loading words favorites';
   static const recent = 'Below you can see your recent word searched. ';
 }

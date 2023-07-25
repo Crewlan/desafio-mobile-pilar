@@ -8,7 +8,6 @@ abstract class IFavoritesLocalDatasource {
   Future<List<FavoritesModel>?> getFavorites();
   Future<void> cacheFavorites({List<FavoritesModel>? favoritesList});
   Future<void> deleteFavorites({required String word});
-  Future<void> deleteAllFavorites();
 }
 
 class FavoritesLocalDatasource extends IFavoritesLocalDatasource {
@@ -20,15 +19,6 @@ class FavoritesLocalDatasource extends IFavoritesLocalDatasource {
   Future<void> cacheFavorites({List<FavoritesModel>? favoritesList}) async {
     try {
       await favoritesDao.insertFavorites(favoritesList ?? []);
-    } on DatabaseException {
-      throw CacheException();
-    }
-  }
-
-  @override
-  Future<void> deleteAllFavorites() async {
-    try {
-      await favoritesDao.deleteAllFavorites();
     } on DatabaseException {
       throw CacheException();
     }

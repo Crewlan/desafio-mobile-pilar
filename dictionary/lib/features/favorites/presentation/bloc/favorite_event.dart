@@ -17,5 +17,3 @@ class DeleteFavoritesEvent extends FavoritesEvent {
     this.word,
   });
 }
-
-class DeleteAllFavoritesEvent extends FavoritesEvent {}

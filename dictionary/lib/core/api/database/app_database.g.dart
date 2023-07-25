@@ -239,11 +239,6 @@ class _$FavoritesDao extends FavoritesDao {
   }
 
   @override
-  Future<void> deleteAllFavorites() async {
-    await _queryAdapter.queryNoReturn('DELETE FROM Favorites');
-  }
-
-  @override
   Future<void> insertFavorites(List<FavoritesModel> favoritesList) async {
     await _favoritesModelInsertionAdapter.insertList(
         favoritesList, OnConflictStrategy.replace);

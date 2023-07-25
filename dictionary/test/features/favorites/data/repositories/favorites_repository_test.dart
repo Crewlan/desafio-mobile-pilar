@@ -79,15 +79,6 @@ void main() {
     expect(result, Left(CacheFailure()));
   });
 
-  test('Should return String when call delete all is successfull ', () async {
-    //Arrange
-    when(() => mockFavoritesLocalDatasource.deleteAllFavorites()).thenAnswer((_) async => AppStrings.delete);
-    //Act
-    //Assert
-    var result = const Right<dynamic, String>(AppStrings.delete);
-    expect(result, const Right(AppStrings.delete));
-  });
-
   test('Should return String when insert a cache is successfull ', () async {
     //Arrange
     when(() => mockFavoritesLocalDatasource.cacheFavorites(favoritesList: any(named: 'favoritesList')))

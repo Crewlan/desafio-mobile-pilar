@@ -11,7 +11,6 @@ import 'core/utils/toggle_config.dart';
 import 'features/favorites/data/datasources/local/favorites_local_datasource.dart';
 import 'features/favorites/data/repositories/favorites_repository.dart';
 import 'features/favorites/domain/repositories/i_favorites_repository.dart';
-import 'features/favorites/domain/usecases/delete_all_favorites.dart';
 import 'features/favorites/domain/usecases/delete_favorites.dart';
 import 'features/favorites/domain/usecases/get_favorites.dart';
 import 'features/favorites/domain/usecases/save_favorites.dart';
@@ -92,11 +91,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SaveFavorites(sl()));
   sl.registerLazySingleton(() => GetFavorites(sl()));
   sl.registerLazySingleton(() => DeleteFavorites(sl()));
-  sl.registerLazySingleton(() => DeleteAllFavorites(sl()));
 
   //* Bloc
   sl.registerLazySingleton(() => FavoritesBloc(
-        sl(),
         sl(),
         sl(),
         sl(),

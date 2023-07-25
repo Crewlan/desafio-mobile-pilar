@@ -14,16 +14,6 @@ class FavoritesRepository extends IFavoritesRepository {
   FavoritesRepository(this.localDatasource);
 
   @override
-  Future<Either<Failure, String>> deleteAllFavorites() async {
-    try {
-      await localDatasource.deleteAllFavorites();
-      return const Right(AppStrings.delete);
-    } on CacheException {
-      return Left(CacheFailure());
-    }
-  }
-
-  @override
   Future<Either<Failure, String>> deleteFavorites({String? word}) async {
     try {
       await localDatasource.deleteFavorites(word: word ?? '');

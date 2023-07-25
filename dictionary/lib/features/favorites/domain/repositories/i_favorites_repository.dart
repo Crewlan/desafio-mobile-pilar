@@ -7,5 +7,4 @@ abstract class IFavoritesRepository {
   Future<Either<Failure, List<Favorites>?>> getFavoritesList();
   Future<Either<Failure, String>> saveFavoritesList({List<Favorites>? favoritesList});
   Future<Either<Failure, String>> deleteFavorites({String? word});
-  Future<Either<Failure, String>> deleteAllFavorites();
 }

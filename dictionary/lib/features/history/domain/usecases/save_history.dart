@@ -9,7 +9,7 @@ class SaveHistory {
 
   SaveHistory(this.repository);
 
-  Future<Either<Failure, String>> call(List<History>? word) async {
-    return await repository.cacheHistory(word);
+  Future<Either<Failure, String>> call({List<History>? word}) async {
+    return await repository.cacheHistory(word: word);
   }
 }

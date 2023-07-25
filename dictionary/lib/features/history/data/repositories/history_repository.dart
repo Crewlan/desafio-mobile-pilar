@@ -14,10 +14,10 @@ class HistoryRepository extends IHistoryRepository {
   HistoryRepository(this.localDatasource);
 
   @override
-  Future<Either<Failure, String>> cacheHistory(List<History>? word) async {
+  Future<Either<Failure, String>> cacheHistory({List<History>? word}) async {
     try {
       var model = word?.map((e) => HistoryModel.fromEntity(e)).toList();
-      await localDatasource.cacheHistory(model);
+      await localDatasource.cacheHistory(word: model);
       return const Right(AppStrings.save);
     } on CacheException {
       return Left(CacheFailure());

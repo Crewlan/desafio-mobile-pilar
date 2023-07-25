@@ -1,4 +1,5 @@
 import 'package:dictionary/features/favorites/domain/entities/favorites.dart';
+import 'package:dictionary/features/history/presentation/bloc/history_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -13,6 +14,7 @@ import '../../../../core/widgets/styled_button.dart';
 import '../../../../core/widgets/styled_error_widget.dart';
 import '../../../../injection_container.dart';
 import '../../../favorites/presentation/bloc/favorite_bloc.dart';
+import '../../../history/domain/entities/history.dart';
 import '../word_bloc/word_bloc.dart';
 import '../word_bloc/word_state.dart';
 
@@ -47,6 +49,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
   FlutterTts ftts = FlutterTts();
   late bool favorite;
   final _favoritesBloc = sl<FavoritesBloc>();
+  final _historyBloc = sl<HistoryBloc>();
 
   int end = 0;
   TtsState ttsState = TtsState.stopped;
@@ -116,6 +119,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
   }
 
   Widget _ready(BuildContext context, WordState state) {
+    var historyList = _historyBloc.state.words;
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Container(
@@ -234,6 +238,9 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                             text: AppStrings.previous,
                             action: () {
                               var prevWord = widget.wordList?[widget.position! - 1];
+                              historyList?.removeWhere((element) => element.word == prevWord);
+                              historyList?.add(History(word: prevWord));
+                              _historyBloc.add(SaveHistoryEvent(words: historyList));
                               Navigator.of(context).pushReplacementNamed(Routes.word,
                                   arguments: WordDetailsScreenParams(
                                     word: prevWord,
@@ -252,6 +259,10 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                             text: AppStrings.next,
                             action: () {
                               var nextWord = widget.wordList?[widget.position! + 1];
+
+                              historyList?.removeWhere((element) => element.word == nextWord);
+                              historyList?.add(History(word: nextWord));
+                              _historyBloc.add(SaveHistoryEvent(words: historyList));
                               Navigator.of(context).pushReplacementNamed(Routes.word,
                                   arguments: WordDetailsScreenParams(
                                     word: nextWord,

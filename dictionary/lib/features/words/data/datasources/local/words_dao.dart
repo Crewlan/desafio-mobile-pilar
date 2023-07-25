@@ -9,10 +9,4 @@ abstract class WordsDao {
 
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertResponseWord(ResponseWordModel responseWordModel);
-
-  @Query('DELETE FROM ResponseWord WHERE word = :word')
-  Future<void> deleteResponseWord(String word);
-
-  @Query('DELETE FROM ResponseWord')
-  Future<void> deleteAllResponses();
 }

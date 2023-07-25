@@ -14,19 +14,9 @@ class FavoritesRepository extends IFavoritesRepository {
   FavoritesRepository(this.localDatasource);
 
   @override
-  Future<Either<Failure, String>> deleteAllFavorites() async {
+  Future<Either<Failure, String>> deleteFavorites({String? word}) async {
     try {
-      await localDatasource.deleteAllFavorites();
-      return const Right(AppStrings.delete);
-    } on CacheException {
-      return Left(CacheFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, String>> deleteFavorites(String? word) async {
-    try {
-      await localDatasource.deleteFavorites(word ?? '');
+      await localDatasource.deleteFavorites(word: word ?? '');
       return const Right(AppStrings.delete);
     } on CacheException {
       return Left(CacheFailure());
@@ -45,10 +35,10 @@ class FavoritesRepository extends IFavoritesRepository {
   }
 
   @override
-  Future<Either<Failure, String>> saveFavoritesList(List<Favorites>? favoritesList) async {
+  Future<Either<Failure, String>> saveFavoritesList({List<Favorites>? favoritesList}) async {
     try {
       var favModel = favoritesList?.map((e) => FavoritesModel.fromEntity(e)).toList();
-      await localDatasource.cacheFavorites(favModel);
+      await localDatasource.cacheFavorites(favoritesList: favModel);
       return const Right(AppStrings.save);
     } on CacheException {
       return Left(CacheFailure());

@@ -9,7 +9,7 @@ class SaveFavorites {
 
   SaveFavorites(this.repository);
 
-  Future<Either<Failure, String>> call(List<Favorites>? favoritesList) async {
-    return await repository.saveFavoritesList(favoritesList);
+  Future<Either<Failure, String>> call({List<Favorites>? favoritesList}) async {
+    return await repository.saveFavoritesList(favoritesList: favoritesList);
   }
 }

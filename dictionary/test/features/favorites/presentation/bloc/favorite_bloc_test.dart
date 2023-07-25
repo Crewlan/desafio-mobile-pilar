@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:dictionary/core/errors/failures.dart';
 import 'package:dictionary/core/utils/app_strings.dart';
 import 'package:dictionary/features/favorites/domain/entities/favorites.dart';
-import 'package:dictionary/features/favorites/domain/usecases/delete_all_favorites.dart';
 import 'package:dictionary/features/favorites/domain/usecases/delete_favorites.dart';
 import 'package:dictionary/features/favorites/domain/usecases/get_favorites.dart';
 import 'package:dictionary/features/favorites/domain/usecases/save_favorites.dart';
@@ -21,13 +20,10 @@ class MockSaveFavoritesList extends Mock implements SaveFavorites {}
 
 class MockDeleteFavoritesList extends Mock implements DeleteFavorites {}
 
-class MockDeleteAllFavoritesList extends Mock implements DeleteAllFavorites {}
-
 void main() {
   late MockGetFavoritesList mockGetFavoritesList;
   late MockSaveFavoritesList mockSaveFavoritesList;
   late MockDeleteFavoritesList mockDeleteFavoritesList;
-  late MockDeleteAllFavoritesList mockDeleteAllFavoritesList;
   late FavoritesBloc favoritesBloc;
 
   var response = const ResponseWord(
@@ -50,14 +46,12 @@ void main() {
 
   setUp(() {
     mockGetFavoritesList = MockGetFavoritesList();
-    mockDeleteAllFavoritesList = MockDeleteAllFavoritesList();
     mockDeleteFavoritesList = MockDeleteFavoritesList();
     mockSaveFavoritesList = MockSaveFavoritesList();
 
     favoritesBloc = FavoritesBloc(
       mockGetFavoritesList,
       mockSaveFavoritesList,
-      mockDeleteAllFavoritesList,
       mockDeleteFavoritesList,
     );
   });

@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
-import '../../../../core/utils/app_strings.dart';
 import '../../domain/entities/response_word.dart';
 import '../../domain/repositories/i_words_repository.dart';
 import '../datasources/local/words_local_datasource.dart';
@@ -54,26 +53,6 @@ class WordsRepository extends IWordsRepository {
       }
     } on NotFoundException {
       return Left(NotFoundFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, String>> deleteAllWord() async {
-    try {
-      await localDatasource.deleteAllResponseWord();
-      return const Right(AppStrings.delete);
-    } on CacheException {
-      return Left(CacheFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, String>> deleteWord(String? word) async {
-    try {
-      await localDatasource.deleteResponseWord(word);
-      return const Right(AppStrings.delete);
-    } on CacheException {
-      return Left(CacheFailure());
     }
   }
 }

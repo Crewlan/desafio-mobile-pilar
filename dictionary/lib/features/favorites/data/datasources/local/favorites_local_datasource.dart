@@ -6,9 +6,8 @@ import 'favorites_dao.dart';
 
 abstract class IFavoritesLocalDatasource {
   Future<List<FavoritesModel>?> getFavorites();
-  Future<void> cacheFavorites(List<FavoritesModel>? favoritesList);
-  Future<void> deleteFavorites(String word);
-  Future<void> deleteAllFavorites();
+  Future<void> cacheFavorites({List<FavoritesModel>? favoritesList});
+  Future<void> deleteFavorites({required String word});
 }
 
 class FavoritesLocalDatasource extends IFavoritesLocalDatasource {
@@ -17,7 +16,7 @@ class FavoritesLocalDatasource extends IFavoritesLocalDatasource {
   FavoritesLocalDatasource(this.favoritesDao);
 
   @override
-  Future<void> cacheFavorites(List<FavoritesModel>? favoritesList) async {
+  Future<void> cacheFavorites({List<FavoritesModel>? favoritesList}) async {
     try {
       await favoritesDao.insertFavorites(favoritesList ?? []);
     } on DatabaseException {
@@ -26,16 +25,7 @@ class FavoritesLocalDatasource extends IFavoritesLocalDatasource {
   }
 
   @override
-  Future<void> deleteAllFavorites() async {
-    try {
-      await favoritesDao.deleteAllFavorites();
-    } on DatabaseException {
-      throw CacheException();
-    }
-  }
-
-  @override
-  Future<void> deleteFavorites(String word) async {
+  Future<void> deleteFavorites({required String word}) async {
     try {
       await favoritesDao.deleteFavorites(word);
     } on DatabaseException {

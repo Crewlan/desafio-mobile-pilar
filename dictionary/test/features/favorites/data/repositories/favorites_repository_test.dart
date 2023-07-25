@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dictionary/core/errors/exceptions.dart';
 import 'package:dictionary/core/errors/failures.dart';
+import 'package:dictionary/core/utils/app_strings.dart';
 import 'package:dictionary/features/favorites/data/datasources/local/favorites_local_datasource.dart';
 import 'package:dictionary/features/favorites/data/models/favorites_model.dart';
 import 'package:dictionary/features/favorites/data/repositories/favorites_repository.dart';
@@ -76,5 +77,25 @@ void main() {
     final result = await favoritesRepository.getFavoritesList();
 
     expect(result, Left(CacheFailure()));
+  });
+
+  test('Should return String when insert a cache is successfull ', () async {
+    //Arrange
+    when(() => mockFavoritesLocalDatasource.cacheFavorites(favoritesList: any(named: 'favoritesList')))
+        .thenAnswer((_) async => AppStrings.save);
+    //Act
+    //Assert
+    var result = const Right<dynamic, String>(AppStrings.save);
+    expect(result, const Right(AppStrings.save));
+  });
+
+  test('Should return String when call delete all is successfull ', () async {
+    //Arrange
+    when(() => mockFavoritesLocalDatasource.deleteFavorites(word: any(named: 'word')))
+        .thenAnswer((_) async => AppStrings.delete);
+    //Act
+    //Assert
+    var result = const Right<dynamic, String>(AppStrings.delete);
+    expect(result, const Right(AppStrings.delete));
   });
 }

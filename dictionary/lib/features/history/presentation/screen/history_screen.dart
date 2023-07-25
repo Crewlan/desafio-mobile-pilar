@@ -1,4 +1,5 @@
 import 'package:dictionary/core/extensions/ui_helper_extension.dart';
+import 'package:dictionary/core/routes/routes.dart';
 import 'package:dictionary/core/utils/app_colors.dart';
 import 'package:dictionary/core/utils/app_strings.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/widgets/styled_error_widget.dart';
+import '../../../../core/widgets/styled_snack_bar.dart';
 import '../../../../injection_container.dart';
 import '../bloc/history_bloc.dart';
 import '../bloc/history_state.dart';
@@ -18,7 +20,19 @@ class HistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: BlocBuilder<HistoryBloc, HistoryState>(
+        body: BlocConsumer<HistoryBloc, HistoryState>(
+          listener: (context, state) {
+            switch (state.status) {
+              case HistoryStatus.message:
+                StyledSnackbar(context).showSuccess(state.msg ?? 'Deleted');
+                Future.delayed(const Duration(seconds: 1), () {
+                  Navigator.of(context).pushReplacementNamed(Routes.home, arguments: 1);
+                });
+                break;
+              default:
+                break;
+            }
+          },
           builder: (context, state) {
             switch (state.status) {
               case HistoryStatus.ready:
@@ -55,6 +69,22 @@ class HistoryScreen extends StatelessWidget {
                   style: GoogleFonts.inter(fontSize: 18),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      _historyBloc.add(DeleteAllHistoryEvent());
+                    },
+                    child: Text(
+                      AppStrings.cleanHistory,
+                      style: GoogleFonts.inter(fontSize: 13),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
                   itemCount: state.words?.length,

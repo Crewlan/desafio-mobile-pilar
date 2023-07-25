@@ -1,20 +1,4 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dictionary/features/favorites/data/datasources/local/favorites_local_datasource.dart';
-import 'package:dictionary/features/favorites/data/repositories/favorites_repository.dart';
-import 'package:dictionary/features/favorites/domain/repositories/i_favorites_repository.dart';
-import 'package:dictionary/features/favorites/domain/usecases/delete_all_favorites.dart';
-import 'package:dictionary/features/favorites/domain/usecases/delete_favorites.dart';
-import 'package:dictionary/features/favorites/domain/usecases/get_favorites.dart';
-import 'package:dictionary/features/favorites/domain/usecases/save_favorites.dart';
-import 'package:dictionary/features/favorites/presentation/bloc/favorite_bloc.dart';
-import 'package:dictionary/features/history/data/datasources/history_local_datasource.dart';
-import 'package:dictionary/features/history/data/repositories/history_repository.dart';
-import 'package:dictionary/features/history/domain/usecases/delete_all_history.dart';
-import 'package:dictionary/features/history/domain/usecases/get_history.dart';
-import 'package:dictionary/features/history/domain/usecases/save_history.dart';
-import 'package:dictionary/features/history/presentation/bloc/history_bloc.dart';
-import 'package:dictionary/features/words/domain/usecases/delete_all_response_word.dart';
-import 'package:dictionary/features/words/domain/usecases/get_response_word.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -24,11 +8,25 @@ import 'core/api/database/app_database.dart';
 import 'core/api/url_creator.dart';
 import 'core/device/network_info.dart';
 import 'core/utils/toggle_config.dart';
+import 'features/favorites/data/datasources/local/favorites_local_datasource.dart';
+import 'features/favorites/data/repositories/favorites_repository.dart';
+import 'features/favorites/domain/repositories/i_favorites_repository.dart';
+import 'features/favorites/domain/usecases/delete_favorites.dart';
+import 'features/favorites/domain/usecases/get_favorites.dart';
+import 'features/favorites/domain/usecases/save_favorites.dart';
+import 'features/favorites/presentation/bloc/favorite_bloc.dart';
+import 'features/history/data/datasources/history_local_datasource.dart';
+import 'features/history/data/repositories/history_repository.dart';
 import 'features/history/domain/repositories/i_history_repository.dart';
+import 'features/history/domain/usecases/delete_all_history.dart';
+import 'features/history/domain/usecases/get_history.dart';
+import 'features/history/domain/usecases/save_history.dart';
+import 'features/history/presentation/bloc/history_bloc.dart';
 import 'features/words/data/datasources/local/words_local_datasource.dart';
 import 'features/words/data/datasources/remote/words_remote_datasource.dart';
 import 'features/words/data/repositories/words_repository.dart';
 import 'features/words/domain/repositories/i_words_repository.dart';
+import 'features/words/domain/usecases/get_response_word.dart';
 import 'features/words/domain/usecases/get_words_list.dart';
 import 'features/words/presentation/word_bloc/word_bloc.dart';
 import 'features/words/presentation/words_list_bloc/words_bloc.dart';
@@ -62,11 +60,10 @@ Future<void> init() async {
   //* Usecase
   sl.registerLazySingleton(() => GetWordsList(sl()));
   sl.registerLazySingleton(() => GetResponseWord(sl()));
-  sl.registerLazySingleton(() => DeleteAllResponseWord(sl()));
 
   //* Bloc
   sl.registerLazySingleton(() => WordsBloc(sl())); //To get offline list words
-  sl.registerLazySingleton(() => WordBloc(sl(), sl())); //To Get info about word consulting the api
+  sl.registerLazySingleton(() => WordBloc(sl())); //To Get info about word consulting the api
 
   //* History
   //* Datasource
@@ -94,11 +91,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SaveFavorites(sl()));
   sl.registerLazySingleton(() => GetFavorites(sl()));
   sl.registerLazySingleton(() => DeleteFavorites(sl()));
-  sl.registerLazySingleton(() => DeleteAllFavorites(sl()));
 
   //* Bloc
   sl.registerLazySingleton(() => FavoritesBloc(
-        sl(),
         sl(),
         sl(),
         sl(),

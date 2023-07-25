@@ -23,7 +23,7 @@ void main() {
           typeOf: ['aa'],
         )
       ],
-      pronunciation: PronunciationModel(all: 'eɪ'),
+      pronunciation: PronunciationModel(all: 'ei'),
       frequency: 7.28);
 
   var fav = FavoritesModel(word: 'a', favorited: true, response: response);

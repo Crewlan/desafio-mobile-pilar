@@ -11,7 +11,4 @@ abstract class FavoritesDao {
 
   @Query('DELETE FROM Favorites WHERE word = :word')
   Future<void> deleteFavorites(String word);
-
-  @Query('DELETE FROM Favorites')
-  Future<void> deleteAllFavorites();
 }

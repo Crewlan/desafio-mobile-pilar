@@ -2,6 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
+import '../../injection_container.dart';
+import '../utils/toggle_config.dart';
+
 abstract class IHttpClient {
   Future<Response> get(String? endpoint, {Map<String, String>? headers});
   Future<Response> post(String? endpoint, String body, {Map<String, String>? headers});
@@ -12,6 +15,7 @@ abstract class IHttpClient {
 
 class HttpClient extends IHttpClient implements InterceptorContract {
   late InterceptedClient _client;
+  final toggleConfig = sl<IToggleConfig>();
 
   HttpClient() {
     _client = InterceptedClient.build(interceptors: [this]);
@@ -19,8 +23,8 @@ class HttpClient extends IHttpClient implements InterceptorContract {
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
     data.headers['Content-Type'] = 'application/json';
-    data.headers['X-RapidAPI-Key'] = '78deb76a33msh66652d47a203c8bp1129b3jsn156cb0132338';
-    data.headers['X-RapidAPI-Host'] = 'wordsapiv1.p.rapidapi.com';
+    data.headers['X-RapidAPI-Key'] = toggleConfig.getString('rapid_api_key');
+    data.headers['X-RapidAPI-Host'] = toggleConfig.getString('rapid_api_host');
 
     return data;
   }

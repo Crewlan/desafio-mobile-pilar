@@ -21,7 +21,7 @@ class UrlCreator implements IUrlCreator {
   }) {
     return Uri(
       scheme: scheme,
-      host: 'https://wordsapiv1.p.rapidapi.com',
+      host: 'wordsapiv1.p.rapidapi.com',
       port: port,
       pathSegments: [...endpoint.split('/'), ...(pathSegments ?? [])],
       queryParameters: queryParameters,

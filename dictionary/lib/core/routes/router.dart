@@ -22,16 +22,19 @@ class AppRouter {
     switch (settings.name) {
       case Routes.home:
         return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: wordsBloc..add(GetWordsEvent())),
-              BlocProvider.value(value: historyBloc..add(GetHistoryEvent())),
-              BlocProvider.value(value: favoritesBloc..add(GetFavoritesEvent())),
-            ],
-            child: HomeScreen(
-              index: settings.arguments as int,
-            ),
-          ),
+          builder: (_) {
+            var args = settings.arguments;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider.value(value: wordsBloc..add(GetWordsEvent())),
+                BlocProvider.value(value: historyBloc..add(GetHistoryEvent())),
+                BlocProvider.value(value: favoritesBloc..add(GetFavoritesEvent())),
+              ],
+              child: HomeScreen(
+                index: args != null ? args as int : 0,
+              ),
+            );
+          },
         );
       case Routes.word:
         return MaterialPageRoute(builder: (_) {

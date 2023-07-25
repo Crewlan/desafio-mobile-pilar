@@ -16,6 +16,8 @@ import '../../../favorites/presentation/bloc/favorite_bloc.dart';
 import '../word_bloc/word_bloc.dart';
 import '../word_bloc/word_state.dart';
 
+enum TtsState { playing, stopped, paused, continued }
+
 class WordDetailsScreenParams {
   final String? word;
   final List<String>? wordList;
@@ -46,12 +48,33 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
   late bool favorite;
   final _favoritesBloc = sl<FavoritesBloc>();
 
+  int end = 0;
+  TtsState ttsState = TtsState.stopped;
+
   @override
   void initState() {
     favorite = _favoritesBloc.state.favoritesList
             ?.firstWhere((element) => element.word == widget.word, orElse: () => const Favorites())
             .favorited ??
         false;
+
+    ftts.setStartHandler(() {
+      setState(() {
+        ttsState = TtsState.playing;
+      });
+    });
+
+    ftts.setCompletionHandler(() {
+      setState(() {
+        ttsState = TtsState.stopped;
+      });
+    });
+
+    ftts.setProgressHandler((String text, int startOffset, int endOffset, String word) {
+      setState(() {
+        end = endOffset;
+      });
+    });
     super.initState();
   }
 
@@ -134,12 +157,11 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        await ftts.setLanguage("en-US");
-                        await ftts.setSpeechRate(0.2);
-                        await ftts.speak(widget.word ?? AppStrings.sorryAudio);
+                        await _speak();
                       },
                       child: const Icon(MdiIcons.play),
                     ),
+                    _progressBar(end)
                   ],
                 ),
                 GestureDetector(
@@ -174,13 +196,13 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            state.responseWord?.resultsModel != null
+            state.responseWord?.results != null
                 ? SizedBox(
                     height: 350,
                     child: ListView.builder(
-                      itemCount: state.responseWord?.resultsModel?.length,
+                      itemCount: state.responseWord?.results?.length,
                       itemBuilder: (context, position) {
-                        var itemResult = state.responseWord?.resultsModel?[position];
+                        var itemResult = state.responseWord?.results?[position];
                         return Text(
                           '${itemResult?.partOfSpeech ?? ''} - ${itemResult?.definition ?? ''}',
                           style: GoogleFonts.inter(fontSize: 14, color: AppColors.darkest),
@@ -247,4 +269,30 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
       ),
     );
   }
+
+  Future _speak() async {
+    await ftts.setLanguage("en-US");
+    await ftts.setSpeechRate(0.2);
+
+    if (widget.word != null) {
+      await ftts.awaitSpeakCompletion(true);
+      await ftts.speak(widget.word ?? AppStrings.sorryAudio);
+    } else {
+      await ftts.speak(AppStrings.sorryAudio);
+    }
+  }
+
+  Widget _progressBar(int end) => Container(
+      width: 200,
+      height: 20,
+      alignment: Alignment.topCenter,
+      padding: const EdgeInsets.only(top: 25.0, left: 25.0, right: 25.0),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        child: LinearProgressIndicator(
+          backgroundColor: AppColors.blue,
+          valueColor: const AlwaysStoppedAnimation<Color>(AppColors.blueDarkest),
+          value: end / widget.word!.length,
+        ),
+      ));
 }

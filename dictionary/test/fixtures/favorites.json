@@ -1,0 +1,23 @@
+{
+    "word": "a",
+    "favorited": true,
+    "response": {
+        "word": "a",
+        "results": [
+            {
+                "definition": "a word",
+                "partOfSpeech": "noun",
+                "synonyms": [
+                    "aa"
+                ],
+                "typeOf": [
+                    "aa"
+                ]
+            }
+        ],
+        "pronunciation": {
+            "all": "eɪ"
+        },
+        "frequency": 7.28
+    }
+}

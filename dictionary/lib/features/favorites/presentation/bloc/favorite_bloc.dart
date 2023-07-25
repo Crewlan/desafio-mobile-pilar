@@ -67,7 +67,7 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
   String _mapFavoritesFailureToString(Failure failure) {
     switch (failure.runtimeType) {
       case CacheFailure:
-        return AppStrings.failureLoadWorldsHistory;
+        return AppStrings.failureLoadWorldsFavorites;
 
       default:
         return AppStrings.failureLoadServer;

@@ -19,4 +19,5 @@ class AppStrings {
   static const failureLoadWorldsHistory = 'Error loading words history';
   static const failureLoadWorldsFavorites = 'Error loading words favorites';
   static const recent = 'Below you can see your recent word searched. ';
+  static const cleanHistory = 'Clear history';
 }

@@ -27,6 +27,7 @@ dependencies:
   firebase_remote_config: ^4.2.1
   firebase_core: ^2.1.0
   flutter_tts: ^3.7.0
+  another_flushbar: ^1.10.24
 
 dev_dependencies:
   flutter_test:

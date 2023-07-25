@@ -31,8 +31,8 @@
  - [firebase_remote_config](https://pub.dev/packages/firebase_remote_config)
  - [firebase_core](https://pub.dev/packages/firebase_core)
  - [flutter_tts (For Text to Speech)](https://pub.dev/packages/flutter_tts)
- - [another_flushbar (For Snackbars)](https://pub.dev/packages/flutter_tts)
+ - [another_flushbar (For Snackbars)](https://pub.dev/packages/another_flushbar)
 
  # Dev Dependencies
   - [flutter_lints](https://pub.dev/packages/flutter_lints)
-  - [mocktail (For unit tests)](https://pub.dev/packages/another_flushbar)
+  - [mocktail (For unit tests)](https://pub.dev/packages/mocktail)

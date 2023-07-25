@@ -1,257 +1,57 @@
 # Mobile Challenge 🏅 2023 - Dictionary
 
-## Introdução
+> This is a challenge by [Coodesh](https://coodesh.com/)
 
-Este é um desafio para que possamos ver as suas habilidades como Mobile Developer.
 
-Nesse desafio você deverá desenvolver um aplicativo para listar palavras em inglês, utilizando como base a API [Words API](https://www.wordsapi.com/). O projeto a ser desenvolvido por você tem como objetivo exibir termos em inglês e gerenciar as palavras visualizadas, conforme indicado nos casos de uso que estão logo abaixo.
+## Introdução App Dictionary
 
-[SPOILER] As instruções de entrega e apresentação do challenge estão no final deste Readme (=
+O app Dictionary é um aplicativo que traz mais de 370k de palavras em inglês e com o uso de uma api para buscar o significado dela.
 
-### Antes de começar
+Alerta! A api usada do rapidapi não é completa e algumas palavras simplesmente nao tem cadastradas la ainda.
+E algumas palavras ele traz um resultado diferente como pronuncia dentro de um objeto e momento vem como uma string direto
+
+ex: pronunciation {"all": "something"}  e as vezes vem como pronunciation: "something" e isso acaba quebrando o app.
+
+## Como rodar o projeto
  
-- Prepare o projeto para ser disponibilizado no Github, copiando o conteúdo deste repositório para o seu (ou utilize o fork do projeto e aponte para o Github). Confirme que a visibilidade do projeto é pública (não esqueça de colocar no readme a referência a este challenge);
-- O projeto deve utilizar a Linguagem específica na sua Vaga (caso esteja se candidatando). Por exempo: Python, R, Scala e entre outras;
-- Considere como deadline 5 dias a partir do início do desafio. Caso tenha sido convidado a realizar o teste e não seja possível concluir dentro deste período, avise a pessoa que o convidou para receber instruções sobre o que fazer.
-- Documentar todo o processo de investigação para o desenvolvimento da atividade (README.md no seu repositório); os resultados destas tarefas são tão importantes do que o seu processo de pensamento e decisões à medida que as completa, por isso tente documentar e apresentar os seus hipóteses e decisões na medida do possível.
+Versão de flutter utilizada -> 3.10.6 (recente)
 
-### Instruções iniciais obrigatórias
+Você pode baixar o [Flutter](https://flutter.dev/docs/get-started/install) seguindos as orientações no site.
 
-- Utilize as seguintes tecnologias:
+Após isso você pode clonar o projeto ou baixar o zip e descompactar.
+Abrindo o projeto não se esqueça de dar um `flutter pub get` no terminal e aguardar o projeto pegar todas dependencias do `pubspec.yaml`.
+Após isso basta rodar o projeto em seu aparelho conectao a um cabo usb ou em um emulador. Caso não tenha emulador olhe este [guia](https://www.fluttercampus.com/tutorial/4/run-first-application/).
 
-#### Tecnologias (Mobile):
-- Nativo ou Hibrido (Flutter, Ionic, React Native, etc)
-- Estilização (Material, Semantic, etc). Ou escrever o seu próprio sob medida 👌
-- Gestão de dados (Redux, Context API, IndexedDB, SQLite, etc)
+Ou você pode baixar este apk e testar em seu aparelho ou emulador.
+[APK](https://drive.google.com/file/d/1lT13-LVEbUpXJraJsFy6G6caHdD2HmBR/view?usp=sharing).
 
-Atente-se, ao desenvolver a aplicação mobile, para conceitos de usabilidade e adeque a interface com elementos visuais para os usuários do seu sistema.
+### Testes
 
-#### Tecnologias (Back-End):
-- Firebase, Supabase, etc
+ - Neste projeto foram realizado testes unitarios desde a camada de datasources até o bloc para gerenciar os estados.
+   Para rodar os testes bastar digitar `flutter test` no seu terminal do projeto e aguardar.
 
-#### Organização:
-- Aplicação de padrões Clean Code
-- Validação de chamadas assíncronas para evitar travamentos
+### Mais informações
+- Este projeto foi desenvolvido usando a Arquitetura limpa seguindo os principios de [Uncle Bob's](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html). 
+- [Flutter](https://flutter.dev/)
+- [Bloc](https://bloclibrary.dev/#/gettingstarted)
 
-### Modelo de Dados:
+### Bibliotecas e plugins utilizados
 
-Conforme indicado na documentação da API, a estrutura de dados presente retorna as seguintes informações:
+ - [bloc (state management)](https://pub.dev/packages/bloc)
+ - [get_it (Dependency Injections)](https://pub.dev/packages/get_it)
+ - [google_fonts](https://pub.dev/packages/google_fonts)
+ - [connectivity_plus](https://pub.dev/packages/connectivity_plus)
+ - [equatable (Simplify Equality Comparisons)](https://pub.dev/packages/equatable)
+ - [http](https://pub.dev/packages/http)
+ - [http_interceptor](https://pub.dev/packages/http_interceptor)
+ - [dartz (for Functional programming)](https://pub.dev/packages/dartz)
+ - [material_design_icons_flutter](https://pub.dev/packages/material_design_icons_flutter)
+ - [floor (SQLite database based in Room)](https://pub.dev/packages/floor)
+ - [firebase_remote_config](https://pub.dev/packages/firebase_remote_config)
+ - [firebase_core](https://pub.dev/packages/firebase_core)
+ - [flutter_tts (For Text to Speech)](https://pub.dev/packages/flutter_tts)
+ - [another_flushbar (For Snackbars)](https://pub.dev/packages/another_flushbar)
 
-```json
-{
-  "word": "example",
-  "results": [
-    {
-      "definition": "a representative form or pattern",
-      "partOfSpeech": "noun",
-      "synonyms": [
-        "model"
-      ],
-      "typeOf": [
-        "representation",
-        "internal representation",
-        "mental representation"
-      ],
-      "hasTypes": [
-        "prefiguration",
-        "archetype",
-        "epitome",
-        "guide",
-        "holotype",
-        "image",
-        "loadstar",
-        "lodestar",
-        "microcosm",
-        "original",
-        "paradigm",
-        "pilot",
-        "prototype",
-        "template",
-        "templet",
-        "type specimen"
-      ],
-      "derivation": [
-        "exemplify"
-      ],
-      "examples": [
-        "I profited from his example"
-      ]
-    },
-    {
-      "definition": "something to be imitated",
-      "partOfSpeech": "noun",
-      "synonyms": [
-        "exemplar",
-        "good example",
-        "model"
-      ],
-      "typeOf": [
-        "ideal"
-      ],
-      "hasTypes": [
-        "pacemaker",
-        "pattern",
-        "beauty",
-        "prodigy",
-        "beaut",
-        "pacesetter"
-      ],
-      "derivation": [
-        "exemplify",
-        "exemplary"
-      ]
-    },
-    {
-      "definition": "an occurrence of something",
-      "partOfSpeech": "noun",
-      "synonyms": [
-        "case",
-        "instance"
-      ],
-      "typeOf": [
-        "happening",
-        "natural event",
-        "occurrence",
-        "occurrent"
-      ],
-      "hasTypes": [
-        "clip",
-        "mortification",
-        "piece",
-        "time",
-        "humiliation",
-        "bit"
-      ],
-      "derivation": [
-        "exemplify"
-      ],
-      "examples": [
-        "but there is always the famous example of the Smiths"
-      ]
-    },
-    {
-      "definition": "an item of information that is typical of a class or group",
-      "partOfSpeech": "noun",
-      "synonyms": [
-        "illustration",
-        "instance",
-        "representative"
-      ],
-      "typeOf": [
-        "information"
-      ],
-      "hasTypes": [
-        "excuse",
-        "apology",
-        "specimen",
-        "case in point",
-        "sample",
-        "exception",
-        "quintessence",
-        "precedent"
-      ],
-      "derivation": [
-        "exemplify",
-        "exemplary"
-      ],
-      "examples": [
-        "this patient provides a typical example of the syndrome",
-        "there is an example on page 10"
-      ]
-    },
-    {
-      "definition": "punishment intended as a warning to others",
-      "partOfSpeech": "noun",
-      "synonyms": [
-        "deterrent example",
-        "lesson",
-        "object lesson"
-      ],
-      "typeOf": [
-        "monition",
-        "admonition",
-        "word of advice",
-        "warning"
-      ],
-      "derivation": [
-        "exemplary"
-      ],
-      "examples": [
-        "they decided to make an example of him"
-      ]
-    },
-    {
-      "definition": "a task performed or problem solved in order to develop skill or understanding",
-      "partOfSpeech": "noun",
-      "synonyms": [
-        "exercise"
-      ],
-      "typeOf": [
-        "lesson"
-      ],
-      "examples": [
-        "you must work the examples at the end of each chapter in the textbook"
-      ]
-    }
-  ],
-  "syllables": {
-    "count": 3,
-    "list": [
-      "ex",
-      "am",
-      "ple"
-    ]
-  },
-  "pronunciation": {
-    "all": "ɪɡ'zæmpəl"
-  },
-  "frequency": 4.67
-}
-```
-
-### Front-End:
-
-Nessa etapa você deverá desenvolver uma aplicação móvel nativa ou hibrida para consumir a API do desafio.
-
-**Obrigatório 1** - Você deverá atender aos seguintes casos de uso:
-
-- Como usuário, devo ser capaz de visualizar uma lista de palavras com rolagem infinita
-- Como usuário, devo ser capaz de visualizar uma palavra, significados e a fonética
-- Como usuário, devo ser capaz de salvar a palavra como favorito
-- Como usuário, devo ser capaz de remover a palavra como favorito
-- Como usuário, devo ser capaz de visitar uma lista com as palavras que já vi anteriormente
-
-A API não possui endpoint com a lista de palavras. Essa lista pode ser carregada em memória ou ser salva em banco de dados local ou remoto (por exemplo, com Firebase). Será necessário usar o [arquivo existente dentro do projeto no Github](https://github.com/dwyl/english-words/blob/master/words_dictionary.json).
-
-**Obrigatório 2** - Salvar em cache o resultado das requisições ao Words API, para agilizar a resposta em caso de buscas com parâmetros repetidos.
-
-**Obrigatório 3** - Seguir o wireframe para a página de listagem dos dados. Pode-se alterar a posição dos itens, mantendo as funcionalidades solicitadas.
-
-<img src="./img/wireframe.png" width="100%" />
-
-**Diferencial 1** - Implementar um tocador de audio utilizando, por exemplo, https://responsivevoice.org/api ou recursos nativos;
-
-**Diferencial 2** - Utilizar alguma ferramenta de Injeção de Dependência;
-
-**Diferencial 3** - Escrever Unit Tests ou E2E Test. Escolher a melhor abordagem e biblioteca;
-
-**Diferencial 4** - Implementar login com usuário e senha e associar os favoritos e histórico ao ID do usuário, salvando essa informação em banco de dados local ou remoto
-
-## Readme do Repositório
-
-- Deve conter o título do projeto
-- Uma descrição sobre o projeto em frase
-- Deve conter uma lista com linguagem, framework e/ou tecnologias usadas
-- Como instalar e usar o projeto (instruções)
-- Não esqueça o [.gitignore](https://www.toptal.com/developers/gitignore)
-- Se está usando github pessoal, referencie que é um challenge by coodesh:  
-
-
-## Finalização e Instruções para a Apresentação
-
-Avisar sobre a finalização e enviar para correção.
-
-
-## Suporte
-
-Entre em contato no email alessandro.silva@soupilar.com.br
+ #  Bibliotecas de desenvolvimento
+  - [flutter_lints](https://pub.dev/packages/flutter_lints)
+  - [mocktail (For unit tests)](https://pub.dev/packages/mocktail)

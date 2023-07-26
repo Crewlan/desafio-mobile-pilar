@@ -25,6 +25,8 @@ Após isso basta rodar o projeto em seu aparelho conectao a um cabo usb ou em um
 Ou você pode baixar este apk e testar em seu aparelho ou emulador.
 [APK](https://drive.google.com/file/d/1lT13-LVEbUpXJraJsFy6G6caHdD2HmBR/view?usp=sharing).
 
+Ou se utilizar macOS, pode rodar no emulador de Iphone normalmente.
+
 ### Testes
 
  - Neste projeto foram realizado testes unitarios desde a camada de datasources até o bloc para gerenciar os estados.
